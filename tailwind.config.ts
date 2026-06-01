@@ -9,12 +9,12 @@ const config: Config = {
   theme: {
     extend: {
       colors: {
-        navy: "#1B3A6B",
-        "navy-dark": "#0F2447",
-        espresso: "#6B4226",
-        "warm-white": "#F8F5F0",
-        "blue-tint": "#E8EFF8",
-        "brown-tint": "#F5EDE5",
+        navy: "#14532D",
+        "navy-dark": "#052E16",
+        espresso: "#16A34A",
+        "warm-white": "#F0FDF4",
+        "blue-tint": "#DCFCE7",
+        "brown-tint": "#BBF7D0",
       },
       fontFamily: {
         poppins: ["var(--font-poppins)", "sans-serif"],
