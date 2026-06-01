@@ -3,11 +3,10 @@
 import { motion } from "framer-motion";
 import Link from "next/link";
 import PropertyCard from "./PropertyCard";
-import { properties } from "@/data/properties";
+import { DBProperty } from "@/lib/supabase";
 
-const featured = properties.filter((p) => p.featured).slice(0, 4);
-
-export default function FeaturedProperties() {
+export default function FeaturedProperties({ properties }: { properties: DBProperty[] }) {
+  const featured = properties.filter((p) => p.featured).slice(0, 4);
   return (
     <section className="relative bg-warm-white py-24 lg:py-36 overflow-hidden">
       {/* Decorative number */}

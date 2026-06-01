@@ -3,9 +3,9 @@
 import { useRef } from "react";
 import { motion } from "framer-motion";
 import Image from "next/image";
-import { neighborhoods } from "@/data/properties";
+import { DBNeighborhood } from "@/lib/supabase";
 
-export default function Neighborhoods() {
+export default function Neighborhoods({ neighborhoods }: { neighborhoods: DBNeighborhood[] }) {
   const scrollRef = useRef<HTMLDivElement>(null);
 
   const scroll = (dir: "left" | "right") => {
@@ -82,7 +82,7 @@ export default function Neighborhoods() {
             className="snap-start shrink-0 w-72 md:w-80 h-96 relative rounded-2xl overflow-hidden cursor-pointer group"
           >
             <Image
-              src={n.imageUrl}
+              src={n.image_url}
               alt={n.name}
               fill
               className="object-cover transition-transform duration-700 group-hover:scale-105"
@@ -96,7 +96,7 @@ export default function Neighborhoods() {
                 <div>
                   <div className="text-white/50 font-poppins text-xs mb-0.5">Avg. Price</div>
                   <div className="text-white font-poppins font-semibold text-sm">
-                    ${(n.avgPrice / 1000000).toFixed(1)}M
+                    ${(n.avg_price / 1000000).toFixed(1)}M
                   </div>
                 </div>
                 <div className="text-right">

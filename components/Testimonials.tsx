@@ -3,9 +3,9 @@
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import Image from "next/image";
-import { testimonials } from "@/data/properties";
+import { DBTestimonial } from "@/lib/supabase";
 
-export default function Testimonials() {
+export default function Testimonials({ testimonials }: { testimonials: DBTestimonial[] }) {
   const [active, setActive] = useState(0);
 
   const next = () => setActive((a) => (a + 1) % testimonials.length);
@@ -71,7 +71,7 @@ export default function Testimonials() {
               {/* Client */}
               <div className="flex flex-col items-center gap-3">
                 <div className="w-16 h-16 rounded-full overflow-hidden border-2 border-blue-tint">
-                  <Image src={t.imageUrl} alt={t.name} width={64} height={64} className="object-cover" />
+                  <Image src={t.image_url} alt={t.name} width={64} height={64} className="object-cover" />
                 </div>
                 <div>
                   <div className="font-poppins font-bold text-navy text-base">{t.name}</div>

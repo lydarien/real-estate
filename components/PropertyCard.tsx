@@ -2,10 +2,10 @@
 
 import { motion } from "framer-motion";
 import Image from "next/image";
-import { Property } from "@/data/properties";
+import { DBProperty } from "@/lib/supabase";
 
 interface Props {
-  property: Property;
+  property: DBProperty;
   tall?: boolean;
 }
 
@@ -22,7 +22,7 @@ export default function PropertyCard({ property, tall = false }: Props) {
       {/* Image */}
       <div className="absolute inset-0 overflow-hidden">
         <Image
-          src={property.imageUrl}
+          src={property.image_url}
           alt={property.title}
           fill
           className="object-cover transition-transform duration-500 ease-out group-hover:scale-105"
@@ -32,7 +32,7 @@ export default function PropertyCard({ property, tall = false }: Props) {
       {/* Gradient overlay */}
       <div className="absolute inset-0 bg-gradient-to-t from-navy/90 via-navy/30 to-transparent" />
 
-      {/* Blue accent bar */}
+      {/* Green accent bar on hover */}
       <motion.div
         initial={{ scaleY: 0 }}
         whileHover={{ scaleY: 1 }}
