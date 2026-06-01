@@ -7,12 +7,15 @@ import Neighborhoods from "@/components/Neighborhoods";
 import StatsCounter from "@/components/StatsCounter";
 import Testimonials from "@/components/Testimonials";
 import CTABanner from "@/components/CTABanner";
+import ContactSection from "@/components/ContactSection";
 import Footer from "@/components/Footer";
 import CustomCursor from "@/components/CustomCursor";
-import { supabase, DBProperty, DBNeighborhood, DBTestimonial } from "@/lib/supabase";
+import { createClient } from "@/lib/supabase/server";
+import { DBProperty, DBNeighborhood, DBTestimonial } from "@/lib/supabase/types";
 
-// Fetch all data server-side
 async function getData() {
+  const supabase = createClient();
+
   const [{ data: properties }, { data: neighborhoods }, { data: testimonials }] =
     await Promise.all([
       supabase.from("properties").select("*").order("id"),
@@ -43,6 +46,7 @@ export default async function HomePage() {
         <StatsCounter />
         <Testimonials testimonials={testimonials} />
         <CTABanner />
+        <ContactSection />
       </main>
       <Footer />
     </>

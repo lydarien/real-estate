@@ -1,7 +1,9 @@
 "use client";
 
+import { useState } from "react";
 import { motion } from "framer-motion";
 import Link from "next/link";
+import { createClient } from "@/lib/supabase/client";
 
 const navLinks = [
   { label: "Properties", href: "/properties" },
@@ -24,6 +26,23 @@ const socialLinks = [
 ];
 
 export default function Footer() {
+  const [email, setEmail] = useState("");
+  const [subStatus, setSubStatus] = useState<"idle" | "loading" | "success" | "error" | "duplicate">("idle");
+
+  const handleSubscribe = async () => {
+    if (!email || !email.includes("@")) return;
+    setSubStatus("loading");
+    const supabase = createClient();
+    const { error } = await supabase.from("newsletter_subscribers").insert({ email });
+    if (!error) {
+      setSubStatus("success");
+      setEmail("");
+    } else if (error.code === "23505") {
+      setSubStatus("duplicate");
+    } else {
+      setSubStatus("error");
+    }
+  };
   return (
     <footer className="bg-navy-dark text-white">
       <div className="max-w-7xl mx-auto px-6 lg:px-10 pt-16 pb-8">
@@ -101,16 +120,28 @@ export default function Footer() {
             <div className="flex flex-col gap-2">
               <input
                 type="email"
+                value={email}
+                onChange={(e) => { setEmail(e.target.value); setSubStatus("idle"); }}
+                onKeyDown={(e) => e.key === "Enter" && handleSubscribe()}
                 placeholder="your@email.com"
-                className="bg-white/5 border border-white/10 rounded-lg px-4 py-3 text-white placeholder-white/30 font-poppins text-sm outline-none focus:border-espresso transition-colors duration-200"
+                disabled={subStatus === "success"}
+                className="bg-white/5 border border-white/10 rounded-lg px-4 py-3 text-white placeholder-white/30 font-poppins text-sm outline-none focus:border-espresso transition-colors duration-200 disabled:opacity-50"
               />
               <motion.button
-                whileHover={{ scale: 1.02 }}
-                whileTap={{ scale: 0.98 }}
-                className="bg-espresso text-white font-poppins font-semibold text-sm py-3 rounded-lg hover:bg-espresso/90 transition-colors duration-300"
+                whileHover={{ scale: subStatus === "success" ? 1 : 1.02 }}
+                whileTap={{ scale: subStatus === "success" ? 1 : 0.98 }}
+                onClick={handleSubscribe}
+                disabled={subStatus === "loading" || subStatus === "success"}
+                className="bg-espresso text-white font-poppins font-semibold text-sm py-3 rounded-lg hover:bg-espresso/90 transition-colors duration-300 disabled:opacity-70"
               >
-                Subscribe
+                {subStatus === "loading" ? "Subscribing..." : subStatus === "success" ? "✓ Subscribed!" : "Subscribe"}
               </motion.button>
+              {subStatus === "duplicate" && (
+                <p className="text-white/40 font-poppins text-xs">You&apos;re already subscribed!</p>
+              )}
+              {subStatus === "error" && (
+                <p className="text-red-400 font-poppins text-xs">Something went wrong. Please try again.</p>
+              )}
             </div>
           </div>
         </div>
